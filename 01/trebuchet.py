@@ -14,7 +14,7 @@ number_mapping = {
     "nine": "9"
 }
 
-with open("data.txt") as f:
+with open("01\data.txt") as f:
     data = f.readlines()
 
 
