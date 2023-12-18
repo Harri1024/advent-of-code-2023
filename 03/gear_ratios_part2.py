@@ -1,7 +1,6 @@
 import re
 
 
-
 def collect_number_coordinates(data):
     numbers_list = []
     pattern = r'(\d+)'
@@ -25,19 +24,28 @@ def collect_symbol_coordinates(data):
     return symbols_list
 
 def check_adjacent_symbols(numbers_list, symbols_list):
-    total = 0
+    the_list = []
+    the_dict = {}
     for number in numbers_list:
         for number_to_check in range(number[1] - 1, number[2] + 1):
             for offset in (-1, 0, 1):
-                
+                key = (number[0] + offset, number_to_check)
                 for symbol in symbols_list:
-                    if (number[0] + offset, number_to_check) is (symbol[0], symbol[1]):
-                        print("symbol[2]")
-                         
-                    #print(number)
-                    #total += number[3]
-                    #break 
-    return total
+                    x = (symbol[0], symbol[1])
+                    if x == key:
+                        #print(number)
+                        the_list.append(number)
+                        if symbol[2] == "*":
+                            #print(symbol)
+                            the_list.append(symbol)
+                            if symbol not in the_dict:
+                                the_dict[symbol] = []
+
+                            the_dict[symbol] += [number]
+                        break
+    return the_dict
+
+
 
 
 with open("03\data.txt") as f:
@@ -47,7 +55,20 @@ numbers_list = collect_number_coordinates(data)
 #print(numbers_list)
 symbols_list = collect_symbol_coordinates(data)
 #print(symbols_list)
-total = check_adjacent_symbols(numbers_list, symbols_list)
-print(total)
+the_list = check_adjacent_symbols(numbers_list, symbols_list)
+#print(the_list)
+#print('---------------------------')
 
-# total = 521515
+total_ratios = 0
+for value in the_list.values():
+    if len(value) == 2:
+        print(value)
+        total_ratios += value[0][3] * value[1][3]
+
+print(total_ratios)
+
+
+#print(build_duplicates_dict(the_list))
+# part 1 total = 521515
+
+#part2 total_ratios = 69527306
